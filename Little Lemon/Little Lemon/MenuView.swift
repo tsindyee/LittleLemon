@@ -13,16 +13,18 @@ struct MenuView: View {
     @State var searchText = ""
     var body: some View {
         VStack {
-            Text("Little Lemon")
-            Text("Chicaga")
-            Text("We are a family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.")
+            HeroView()
+            MenuBreakdownView()
             TextField("Search Menu", text: $searchText)
             FetchedObjects(predicate: buildPredicate(), sortDescriptors: buildSortDescriptors()) { (dishes: [Dish]) in
                 List {
                     ForEach(dishes) { dish in
                         HStack {
-                            Text(dish.title ?? "")
-                            Text(dish.price ?? "")
+                            VStack {
+                                Text(dish.title ?? "")
+                                Text(dish.desc ?? "")
+                                Text(dish.price ?? "")
+                            }
                             AsyncImage(url: URL(string: dish.image ?? "")) { image in
                                 image.resizable() // Allows the image to be resized
                                      .scaledToFit() // Maintains aspect ratio
@@ -37,7 +39,7 @@ struct MenuView: View {
             }
             
         }.onAppear {
-            getMenuData()
+             getMenuData()
         }
     }
     
