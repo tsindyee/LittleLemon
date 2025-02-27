@@ -14,28 +14,18 @@ struct MenuView: View {
     var body: some View {
         VStack {
             HeroView()
+                .background(.primaryColor1)
             MenuBreakdownView()
             TextField("Search Menu", text: $searchText)
+                .padding(.horizontal)
             FetchedObjects(predicate: buildPredicate(), sortDescriptors: buildSortDescriptors()) { (dishes: [Dish]) in
                 List {
                     ForEach(dishes) { dish in
-                        HStack {
-                            VStack {
-                                Text(dish.title ?? "")
-                                Text(dish.desc ?? "")
-                                Text(dish.price ?? "")
-                            }
-                            AsyncImage(url: URL(string: dish.image ?? "")) { image in
-                                image.resizable() // Allows the image to be resized
-                                     .scaledToFit() // Maintains aspect ratio
-                            } placeholder: {
-                                ProgressView() // Show a loading indicator
-                            }
-                            .frame(height: 60) // Set fixed size
-                            .clipShape(RoundedRectangle(cornerRadius: 10)) // Optional: Add rounded corners
-                        }
+                        MenuItemView(dish: dish)
                     }
                 }
+                .scrollContentBackground(.hidden)
+                .listStyle(PlainListStyle())
             }
             
         }.onAppear {
@@ -102,4 +92,5 @@ struct MenuView: View {
 
 #Preview {
     MenuView()
+        .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
 }

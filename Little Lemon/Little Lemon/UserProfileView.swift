@@ -17,9 +17,10 @@ struct UserProfileView: View {
     var body: some View {
         VStack {
             Text("Personal information")
-            Image(" profile-image-placeholder")
-            Text(firstName ?? "")
-            Text(lastName ?? "")
+            Image("profile-image-placeholder")
+            Text("Name:")
+            Text("\(firstName ?? "") \(lastName ?? "")")
+            Text("Email:")
             Text(email ?? "")
             Button("Logout") {
                 UserDefaults.standard.set(false, forKey: kIsLoggedIn)
